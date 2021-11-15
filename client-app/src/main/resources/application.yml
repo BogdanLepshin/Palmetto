@@ -1,0 +1,27 @@
+server:
+  port: 8080
+
+spring:
+#  jpa:
+#    open-in-view: false
+#    database: POSTGRESQL
+#    show-sql: false
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/postgres
+#    username: postgres
+#    password: postgres
+#    driver-class-name: org.postgresql.Driver
+  kafka:
+    bootstrap-servers: localhost:9092
+    properties:
+      # Delegate deserializers
+      spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.LongDeserializer
+      spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+    consumer:
+      # Configures the Spring Kafka ErrorHandlingDeserializer that delegates to the 'real' deserializers
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      enable-auto-commit: false
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer

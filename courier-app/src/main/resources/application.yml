@@ -1,0 +1,24 @@
+server:
+  port: 8081
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    properties:
+      # Delegate deserializers
+      spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.LongDeserializer
+      spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+    consumer:
+      enable-auto-commit: false
+      # Configures the Spring Kafka ErrorHandlingDeserializer that delegates to the 'real' deserializers
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+app:
+  kafka:
+    notification:
+      topic: notification-topic
+      group: courier-app-group
